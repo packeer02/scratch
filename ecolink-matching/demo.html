@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>EcoLink AI Mentor Matcher</title>
+  <style>
+    :root { --surface: #f8fafc; --surface2: #ffffff; --border: #e2e8f0; --text: #0f172a; --text2: #475569; --primary: #3b82f6; --green: #10b981; }
+    body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; background: var(--surface); color: var(--text); padding: 40px; margin: 0; }
+    .container { max-width: 900px; margin: 0 auto; }
+    .header { margin-bottom: 30px; }
+    .header h1 { margin: 0 0 10px 0; font-size: 28px; }
+    .header p { margin: 0; color: var(--text2); }
+    .panel { background: var(--surface2); border: 1px solid var(--border); border-radius: 12px; padding: 24px; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05); }
+    
+    .startup-selector { margin-bottom: 24px; padding-bottom: 24px; border-bottom: 1px solid var(--border); }
+    select { padding: 10px; border-radius: 6px; border: 1px solid var(--border); width: 100%; max-width: 400px; font-size: 16px; margin-top: 8px; }
+    
+    .result-card { border: 1px solid var(--border); border-radius: 8px; padding: 16px; margin-bottom: 16px; display: flex; flex-direction: column; gap: 12px; transition: border-color 0.2s; }
+    .result-card:hover { border-color: var(--primary); }
+    .card-header { display: flex; justify-content: space-between; align-items: center; }
+    .mentor-name { font-size: 18px; font-weight: 600; margin: 0; }
+    .score-badge { background: rgba(59,130,246,0.1); color: var(--primary); padding: 6px 12px; border-radius: 20px; font-weight: 700; font-size: 14px; }
+    .score-badge.high { background: rgba(16,185,129,0.1); color: var(--green); }
+    .reasoning { font-size: 14px; color: var(--text2); line-height: 1.5; background: #f1f5f9; padding: 12px; border-radius: 6px; border-left: 4px solid var(--primary); }
+    .reasoning.high { border-left-color: var(--green); }
+    
+    .btn { background: var(--primary); color: white; border: none; padding: 8px 16px; border-radius: 6px; font-size: 14px; font-weight: 500; cursor: pointer; transition: opacity 0.2s; }
+    .btn:hover { opacity: 0.9; }
+    .btn-approve { background: var(--green); }
+    .btn-reject { background: #ef4444; }
+    
+    .actions { display: flex; gap: 8px; margin-top: 8px; }
+    
+    pre { background: #1e293b; color: #cbd5e1; padding: 16px; border-radius: 8px; overflow-x: auto; font-size: 13px; }
+  </style>
+</head>
+<body>
+
+  <div class="container">
+    <div class="header">
+      <h1>EcoLink AI Matching Engine</h1>
+      <p>Standalone matching module testing environment</p>
+    </div>
+
+    <div class="panel">
+      <div class="startup-selector">
+        <label style="font-weight: 600; display: block;">Select a Startup to match against the Mentor Pool:</label>
+        <select id="startup-select"></select>
+      </div>
+      
+      <h3 style="margin-top: 0;">Ranked Mentor Suggestions</h3>
+      <div id="results-container"></div>
+      
+      <h3 style="margin-top: 40px; border-top: 1px solid var(--border); padding-top: 24px;">Raw JSON Output format</h3>
+      <pre id="json-output"></pre>
+    </div>
+  </div>
+
+  <script src="mockData.js"></script>
+  <script src="ecolinkEngine.js"></script>
+  <script>
+    const startupSelect = document.getElementById('startup-select');
+    const resultsContainer = document.getElementById('results-container');
+    const jsonOutput = document.getElementById('json-output');
+
+    // Populate dropdown
+    STARTUPS.forEach(s => {
+      const opt = document.createElement('option');
+      opt.value = s.id;
+      opt.textContent = `${s.name} (${s.industry}, ${s.stage})`;
+      startupSelect.appendChild(opt);
+    });
+
+    function runMatching() {
+      const selectedId = startupSelect.value;
+      const startup = STARTUPS.find(s => s.id === selectedId);
+      
+      // Run the engine module
+      const rankedMatches = EcoLinkMatcher.matchMentors(startup, MENTORS);
+      
+      // Render UI
+      resultsContainer.innerHTML = '';
+      rankedMatches.forEach(match => {
+        const isHigh = match.matchScore >= 80;
+        const el = document.createElement('div');
+        el.className = 'result-card';
+        el.innerHTML = `
+          <div class="card-header">
+            <h4 class="mentor-name">${match.name}</h4>
+            <div class="score-badge ${isHigh ? 'high' : ''}">${match.matchScore}% Match</div>
+          </div>
+          <div class="reasoning ${isHigh ? 'high' : ''}">
+            <strong>AI Reasoning:</strong> ${match.reasoning}
+          </div>
+          <div class="actions">
+            <button class="btn btn-approve">Approve Match</button>
+            <button class="btn btn-reject">Reject</button>
+          </div>
+        `;
+        resultsContainer.appendChild(el);
+      });
+      
+      // Render JSON
+      // Omit the breakdown object for the clean output format required by prompt
+      const cleanJson = rankedMatches.map(m => ({
+        mentorId: m.mentorId,
+        name: m.name,
+        matchScore: m.matchScore,
+        reasoning: m.reasoning
+      }));
+      jsonOutput.textContent = JSON.stringify(cleanJson, null, 2);
+    }
+
+    startupSelect.addEventListener('change', runMatching);
+    runMatching(); // Init
+  </script>
+
+</body>
+</html>

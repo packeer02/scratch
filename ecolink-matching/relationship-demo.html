@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>EcoLink Relationship Management</title>
+  <style>
+    :root { --surface: #f8fafc; --surface2: #ffffff; --border: #e2e8f0; --text: #0f172a; --text2: #475569; --primary: #3b82f6; --green: #10b981; --yellow: #f59e0b; --red: #ef4444; }
+    body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; background: var(--surface); color: var(--text); padding: 40px; margin: 0; }
+    .container { max-width: 900px; margin: 0 auto; }
+    .header { margin-bottom: 30px; }
+    .header h1 { margin: 0 0 10px 0; font-size: 28px; }
+    .header p { margin: 0; color: var(--text2); }
+    .panel { background: var(--surface2); border: 1px solid var(--border); border-radius: 12px; padding: 24px; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05); }
+    
+    .status-badge { padding: 4px 10px; border-radius: 20px; font-weight: 700; font-size: 12px; text-transform: uppercase; }
+    .status-Active { background: rgba(16,185,129,0.1); color: var(--green); }
+    .status-Idle { background: rgba(245,158,11,0.1); color: var(--yellow); }
+    .status-At-Risk { background: rgba(239,68,68,0.1); color: var(--red); }
+    .status-Completed { background: rgba(59,130,246,0.1); color: var(--primary); }
+    
+    .btn { background: var(--primary); color: white; border: none; padding: 10px 16px; border-radius: 6px; font-size: 14px; font-weight: 500; cursor: pointer; transition: opacity 0.2s; margin-right: 8px; margin-bottom: 8px;}
+    .btn:hover { opacity: 0.9; }
+    .btn-secondary { background: #f1f5f9; color: var(--text); border: 1px solid var(--border); }
+    .btn-secondary:hover { background: #e2e8f0; }
+    .btn-danger { background: var(--red); }
+    
+    .top-actions { margin-bottom: 24px; padding-bottom: 24px; border-bottom: 1px solid var(--border); }
+    
+    .relationship-card { border: 1px solid var(--border); border-radius: 8px; padding: 16px; margin-bottom: 16px; }
+    .card-header { display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--border); padding-bottom: 12px; margin-bottom: 12px; }
+    .rel-title { font-size: 18px; font-weight: 600; margin: 0; }
+    
+    pre { background: #1e293b; color: #cbd5e1; padding: 16px; border-radius: 8px; overflow-x: auto; font-size: 13px; margin: 0; }
+    
+    /* Pipeline UI */
+    .pipeline { display: flex; align-items: flex-start; justify-content: space-between; margin: 24px 0; position: relative; padding: 0 20px; }
+    .pipeline::before { content: ''; position: absolute; top: 12px; left: 40px; right: 40px; height: 3px; background: var(--border); z-index: 1; }
+    .pipeline-node { display: flex; flex-direction: column; align-items: center; z-index: 2; width: 120px; text-align: center; }
+    .node-circle { width: 26px; height: 26px; border-radius: 50%; background: var(--surface2); border: 3px solid var(--border); display: flex; align-items: center; justify-content: center; font-size: 12px; font-weight: bold; margin-bottom: 8px; }
+    .node-title { font-size: 12px; font-weight: 600; color: var(--text); line-height: 1.3; margin-bottom: 4px; }
+    .node-date { font-size: 11px; color: var(--text2); }
+    
+    /* Status Colors */
+    .node-Completed .node-circle { border-color: var(--green); background: var(--green); color: white; }
+    .node-In-Progress .node-circle { border-color: var(--primary); background: white; color: var(--primary); }
+    .node-Pending .node-circle { border-color: var(--border); color: transparent; }
+    .node-Missed .node-circle { border-color: var(--red); background: var(--red); color: white; }
+    .pipeline-node.node-Completed ~ .pipeline-node .node-circle { /* subsequent nodes */ }
+  </style>
+</head>
+<body>
+
+  <div class="container">
+    <div class="header">
+      <h1>EcoLink Relationship Manager</h1>
+      <p>Simulating the backend status engine, API endpoints, and chronological logging.</p>
+    </div>
+
+    <div class="panel">
+      <div class="top-actions">
+        <button class="btn" id="btn-create" onclick="demoCreate()">1. [POST] Create Relationship</button>
+        <button class="btn btn-secondary" id="btn-meeting" onclick="demoMeeting()" disabled>2. [POST] Log Meeting</button>
+        <button class="btn btn-secondary" id="btn-milestone" onclick="demoMilestone()" disabled>3. [POST] Add Milestone</button>
+        <button class="btn btn-danger" id="btn-time" onclick="demoTimePass()" style="float:right" disabled>⏱ Fast Forward 20 Days (Test Engine)</button>
+      </div>
+      
+      <div id="ui-container">
+        <p style="color:var(--text2); text-align:center; padding: 40px 0;">No relationships tracking yet. Click Create.</p>
+      </div>
+    </div>
+  </div>
+
+  <script src="relationshipManager.js"></script>
+  <script>
+    const api = new EcoLinkRelationshipManager();
+    let currentRelId = null;
+
+    function renderUI() {
+      const container = document.getElementById('ui-container');
+      
+      if (api.relationships.length === 0) return;
+      
+      const rel = api.getRelationship(currentRelId);
+      
+      container.innerHTML = `
+        <div class="relationship-card">
+          <div class="card-header">
+            <div>
+              <h4 class="rel-title">Mentor ${rel.mentorId} ↔ Startup ${rel.startupId}</h4>
+              <div style="font-size:12px; color:var(--text2); margin-top:4px;">ID: ${rel.relationshipId} | Last Activity: ${new Date(rel.lastActivityDate).toLocaleDateString()}</div>
+            </div>
+            <div class="status-badge status-${rel.status}">${rel.status}</div>
+          </div>
+          
+          <h5 style="margin: 0 0 16px 0; color:var(--text2)">Milestone Pipeline</h5>
+          <div class="pipeline">
+            ${rel.milestones.length === 0 ? '<div style="font-size:13px;color:var(--text3);width:100%;text-align:center">No milestones added yet.</div>' : ''}
+            ${rel.milestones.map(ms => {
+              const isPastTarget = new Date() > new Date(ms.targetDate);
+              let nodeStatus = ms.status === 'Completed' ? 'Completed' : (isPastTarget ? 'Missed' : ms.status.replace(' ', '-'));
+              let icon = ms.status === 'Completed' ? '✓' : (nodeStatus === 'Missed' ? '!' : '');
+              
+              return `
+              <div class="pipeline-node node-${nodeStatus}">
+                <div class="node-circle">${icon}</div>
+                <div class="node-title">${ms.title}</div>
+                <div class="node-date">${new Date(ms.targetDate).toLocaleDateString()}</div>
+              </div>
+              `;
+            }).join('')}
+          </div>
+
+          <h5 style="margin: 24px 0 8px 0; color:var(--text2); border-top:1px solid var(--border); padding-top:16px;">JSON Output [GET /relationships/${rel.relationshipId}]</h5>
+          <pre>${JSON.stringify(rel, null, 2)}</pre>
+        </div>
+      `;
+    }
+
+    function demoCreate() {
+      const rel = api.createRelationship("M001", "S001", "ADMIN_1");
+      currentRelId = rel.relationshipId;
+      
+      // Pre-seed some pipeline milestones to visualize immediately
+      const d1 = new Date(api.currentDate); d1.setDate(d1.getDate() - 5);
+      const d2 = new Date(api.currentDate); d2.setDate(d2.getDate() + 10);
+      const d3 = new Date(api.currentDate); d3.setDate(d3.getDate() + 30);
+      
+      api.addMilestone(currentRelId, { title: "Problem Definition", description: "Validate problem space", status: "Completed", targetDate: d1.toISOString() });
+      api.addMilestone(currentRelId, { title: "MVP Built", description: "First working prototype", status: "In Progress", targetDate: d2.toISOString() });
+      api.addMilestone(currentRelId, { title: "Product Launch", description: "Public release", status: "Pending", targetDate: d3.toISOString() });
+
+      document.getElementById('btn-meeting').disabled = false;
+      document.getElementById('btn-milestone').disabled = false;
+      document.getElementById('btn-time').disabled = false;
+      renderUI();
+    }
+
+    function demoMeeting() {
+      api.logMeeting(currentRelId, {
+        type: "online",
+        notes: "Discussed MVP roadmap and identified 2 key hires.",
+        actionItems: ["Draft job descriptions", "Setup AWS credits"],
+        createdBy: "mentor"
+      });
+      renderUI();
+    }
+
+    function demoMilestone() {
+      // Set a target date 7 days from current simulated date
+      const target = new Date(api.currentDate);
+      target.setDate(target.getDate() + 7);
+      
+      api.addMilestone(currentRelId, {
+        title: "Funding Readiness",
+        description: "Pitch deck review",
+        status: "Pending",
+        targetDate: target.toISOString()
+      });
+      renderUI();
+    }
+
+    function demoTimePass() {
+      // Simulating 20 days of inactivity.
+      // This will trigger the "Idle" rule (if >14 days) or "At-Risk" rule (if >21 days or missed milestone).
+      api.simulateDaysPassing(20);
+      renderUI();
+    }
+  </script>
+
+</body>
+</html>

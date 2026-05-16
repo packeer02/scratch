@@ -1,0 +1,9 @@
+version: '3.8'
+
+services:
+  gain-app:
+    build: .
+    ports:
+      - "8080:80"
+    container_name: gain-ecolink-portal
+    restart: unless-stopped

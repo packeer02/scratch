@@ -1,0 +1,506 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>GAIN Platform — AI-Enabled Mentorship by Cradle</title>
+  <meta name="description" content="GAIN Programme's AI-powered mentor-startup matching and relationship management platform for Malaysia, Indonesia, and Thailand." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Outfit:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <!-- Mobile Header -->
+  <div class="mobile-header">
+    <div class="logo">
+      <div class="logo-icon">
+        <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M12 2L2 7L12 12L22 7L12 2Z" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/>
+          <path d="M2 17L12 22L22 17" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/>
+          <path d="M2 12L12 17L22 12" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/>
+        </svg>
+      </div>
+      <div class="logo-title">GAIN</div>
+    </div>
+    <button class="mobile-menu-btn" id="mobile-menu-btn">
+      <svg viewBox="0 0 24 24" fill="none" width="28" height="28"><path d="M3 12h18M3 6h18M3 18h18" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+    </button>
+  </div>
+
+  <!-- Sidebar -->
+  <aside class="sidebar" id="sidebar">
+    <button class="mobile-close-btn" id="mobile-close-btn">✕</button>
+    <div class="sidebar-header">
+      <div class="logo">
+        <div class="logo-icon">
+          <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M12 2L2 7L12 12L22 7L12 2Z" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/>
+            <path d="M2 17L12 22L22 17" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/>
+            <path d="M2 12L12 17L22 12" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/>
+          </svg>
+        </div>
+        <div>
+          <div class="logo-title">GAIN</div>
+          <div class="logo-sub">by Cradle</div>
+        </div>
+      </div>
+      <!-- Role Switcher -->
+      <div class="role-switcher" id="role-switcher">
+        <div class="role-switcher-label">Signed in as</div>
+        <div class="role-switcher-trigger" id="role-switcher-trigger">
+          <div class="user-avatar" id="rbac-user-initials" style="width:28px;height:28px;font-size:11px">AM</div>
+          <div class="role-switcher-info">
+            <div class="role-switcher-name" id="rbac-user-name">Amirah Yusof</div>
+            <div class="role-switcher-role" id="rbac-user-role">Programme Admin</div>
+          </div>
+          <svg class="role-switcher-caret" viewBox="0 0 24 24" fill="none" width="14" height="14"><path d="M6 9l6 6 6-6" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+        </div>
+        <div class="role-dropdown hidden" id="role-dropdown"></div>
+      </div>
+      <!-- Register Button -->
+      <button class="btn btn-ghost" id="open-register-btn" style="width:100%;margin-top:8px;border:1px dashed var(--border);border-radius:var(--radius-sm)">+ Self-Register</button>
+    </div>
+
+    <nav class="sidebar-nav">
+      <div class="nav-section-label" id="nav-label-overview">Overview</div>
+      <a href="#" class="nav-item active" data-page="dashboard" id="nav-dashboard">
+        <span class="nav-icon">
+          <svg viewBox="0 0 24 24" fill="none"><rect x="3" y="3" width="7" height="7" rx="1" stroke="currentColor" stroke-width="2"/><rect x="14" y="3" width="7" height="7" rx="1" stroke="currentColor" stroke-width="2"/><rect x="3" y="14" width="7" height="7" rx="1" stroke="currentColor" stroke-width="2"/><rect x="14" y="14" width="7" height="7" rx="1" stroke="currentColor" stroke-width="2"/></svg>
+        </span>
+        Dashboard
+      </a>
+
+      <div class="nav-section-label" id="nav-label-programme">Programme</div>
+      <a href="#" class="nav-item" data-page="mentors" id="nav-mentors">
+        <span class="nav-icon">
+          <svg viewBox="0 0 24 24" fill="none"><circle cx="12" cy="8" r="4" stroke="currentColor" stroke-width="2"/><path d="M4 20c0-4 3.6-7 8-7s8 3 8 7" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+        </span>
+        Mentors
+        <span class="nav-badge">6</span>
+      </a>
+      <a href="#" class="nav-item" data-page="startups" id="nav-startups">
+        <span class="nav-icon">
+          <svg viewBox="0 0 24 24" fill="none"><path d="M12 2L15.09 8.26L22 9.27L17 14.14L18.18 21.02L12 17.77L5.82 21.02L7 14.14L2 9.27L8.91 8.26L12 2Z" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/></svg>
+        </span>
+        Startups
+        <span class="nav-badge">5</span>
+      </a>
+      <a href="#" class="nav-item" data-page="matching" id="nav-matching">
+        <span class="nav-icon">
+          <svg viewBox="0 0 24 24" fill="none"><circle cx="9" cy="12" r="6" stroke="currentColor" stroke-width="2"/><circle cx="15" cy="12" r="6" stroke="currentColor" stroke-width="2"/></svg>
+        </span>
+        AI Matching
+        <span class="nav-badge new">AI</span>
+      </a>
+      <a href="#" class="nav-item" data-page="relationships" id="nav-relationships">
+        <span class="nav-icon">
+          <svg viewBox="0 0 24 24" fill="none"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71" stroke="currentColor" stroke-width="2" stroke-linecap="round"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+        </span>
+        Relationships
+        <span class="nav-badge">5</span>
+      </a>
+
+      <div class="nav-section-label" id="nav-label-intelligence">Intelligence</div>
+      <a href="#" class="nav-item" data-page="cohorts" id="nav-cohorts">
+        <span class="nav-icon">
+          <svg viewBox="0 0 24 24" fill="none"><path d="M3 3h18v4H3z" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/><path d="M3 10h18v4H3z" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/><path d="M3 17h18v4H3z" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/></svg>
+        </span>
+        Cohorts
+      </a>
+    </nav>
+
+    <div class="sidebar-footer">
+      <div class="user-chip">
+        <div class="user-status" style="margin-left:auto;margin-right:0"></div>
+      </div>
+    </div>
+  </aside>
+
+  <!-- Main -->
+  <main class="main" id="main-content">
+    <!-- Role Banner -->
+    <div class="role-banner" id="role-banner">
+      <div class="role-banner-left">
+        <span class="role-banner-icon">🔐</span>
+        <div>
+          <div class="role-banner-top">Viewing as <strong id="role-banner-role">Programme Admin</strong></div>
+          <div class="role-banner-sub"><span id="role-banner-name">Amirah Yusof</span> — <span id="role-banner-desc"></span></div>
+        </div>
+      </div>
+      <div class="role-banner-right" id="role-banner-permissions"></div>
+    </div>
+    <!-- Dashboard Page -->
+    <div class="page active" id="page-dashboard">
+      <div class="page-header">
+        <div>
+          <h1 class="page-title">Programme Dashboard</h1>
+          <p class="page-subtitle">GAIN Cohort 7 · January – July 2026 · Malaysia</p>
+        </div>
+        <div class="header-actions">
+          <div class="date-chip">
+            <svg viewBox="0 0 24 24" fill="none" width="14" height="14"><rect x="3" y="4" width="18" height="18" rx="2" stroke="currentColor" stroke-width="2"/><path d="M16 2v4M8 2v4M3 10h18" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+            16 May 2026
+          </div>
+          <button class="btn btn-primary" id="run-matching-btn" data-permission="run_matching">
+            <svg viewBox="0 0 24 24" fill="none" width="16" height="16"><circle cx="9" cy="12" r="6" stroke="currentColor" stroke-width="2"/><circle cx="15" cy="12" r="6" stroke="currentColor" stroke-width="2"/></svg>
+            Run AI Matching
+          </button>
+        </div>
+      </div>
+
+      <!-- KPI Cards -->
+      <div class="kpi-grid">
+        <div class="kpi-card">
+          <div class="kpi-icon" style="background: rgba(99,102,241,0.15); color: #818CF8">
+            <svg viewBox="0 0 24 24" fill="none" width="22" height="22"><path d="M12 2L15.09 8.26L22 9.27L17 14.14L18.18 21.02L12 17.77L5.82 21.02L7 14.14L2 9.27L8.91 8.26L12 2Z" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/></svg>
+          </div>
+          <div class="kpi-content">
+            <div class="kpi-value">5</div>
+            <div class="kpi-label">Active Startups</div>
+          </div>
+          <div class="kpi-trend up">+2 this cohort</div>
+        </div>
+        <div class="kpi-card">
+          <div class="kpi-icon" style="background: rgba(16,185,129,0.15); color: #34D399">
+            <svg viewBox="0 0 24 24" fill="none" width="22" height="22"><circle cx="12" cy="8" r="4" stroke="currentColor" stroke-width="2"/><path d="M4 20c0-4 3.6-7 8-7s8 3 8 7" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+          </div>
+          <div class="kpi-content">
+            <div class="kpi-value">6</div>
+            <div class="kpi-label">Active Mentors</div>
+          </div>
+          <div class="kpi-trend up">4 returning</div>
+        </div>
+        <div class="kpi-card">
+          <div class="kpi-icon" style="background: rgba(245,158,11,0.15); color: #FCD34D">
+            <svg viewBox="0 0 24 24" fill="none" width="22" height="22"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71" stroke="currentColor" stroke-width="2" stroke-linecap="round"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+          </div>
+          <div class="kpi-content">
+            <div class="kpi-value">5</div>
+            <div class="kpi-label">Active Relationships</div>
+          </div>
+          <div class="kpi-trend up">Avg score 4.7★</div>
+        </div>
+        <div class="kpi-card">
+          <div class="kpi-icon" style="background: rgba(236,72,153,0.15); color: #F472B6">
+            <svg viewBox="0 0 24 24" fill="none" width="22" height="22"><path d="M12 20h9" stroke="currentColor" stroke-width="2" stroke-linecap="round"/><path d="M16.5 3.5a2.121 2.121 0 013 3L7 19l-4 1 1-4L16.5 3.5z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </div>
+          <div class="kpi-content">
+            <div class="kpi-value">89%</div>
+            <div class="kpi-label">Avg Match Score</div>
+          </div>
+          <div class="kpi-trend up">AI-driven</div>
+        </div>
+      </div>
+
+      <!-- Pending Registrations (Programme Admin) -->
+      <div class="card" id="pending-registrations-card" style="display:none;margin-bottom:20px;border-color:rgba(245,158,11,0.3)">
+        <div class="card-header">
+          <h2 class="card-title" style="color:var(--yellow)">Pending Registrations</h2>
+          <span class="badge badge-yellow">Needs Functional Approval</span>
+        </div>
+        <div class="relationship-list" id="pending-registrations-list"></div>
+      </div>
+
+      <!-- Two-col layout: Activity + Health -->
+      <div class="dashboard-grid">
+        <!-- Relationship Health -->
+        <div class="card">
+          <div class="card-header">
+            <h2 class="card-title">Relationship Health</h2>
+            <span class="badge badge-green">Live</span>
+          </div>
+          <div class="relationship-list" id="dashboard-rel-list"></div>
+        </div>
+
+        <!-- Activity Feed -->
+        <div class="card">
+          <div class="card-header">
+            <h2 class="card-title">Activity Feed</h2>
+            <button class="btn-ghost">View all</button>
+          </div>
+          <div class="activity-feed" id="activity-feed">
+            <div class="activity-item">
+              <div class="activity-dot green"></div>
+              <div class="activity-content">
+                <div class="activity-text"><strong>GreenPack ↔ Dr. Priya</strong> completed Month 1 Check-in</div>
+                <div class="activity-time">2 days ago · Score: 4.8/5</div>
+              </div>
+            </div>
+            <div class="activity-item">
+              <div class="activity-dot blue"></div>
+              <div class="activity-content">
+                <div class="activity-text"><strong>FlowPay ↔ Dato' Rajan</strong> Month 3 Review completed</div>
+                <div class="activity-time">4 days ago · Score: 4.9/5</div>
+              </div>
+            </div>
+            <div class="activity-item">
+              <div class="activity-dot yellow"></div>
+              <div class="activity-content">
+                <div class="activity-text"><strong>GreenPack ↔ Ahmad F.</strong> meeting frequency dropped</div>
+                <div class="activity-time">5 days ago · ⚠️ Intervention suggested</div>
+              </div>
+            </div>
+            <div class="activity-item">
+              <div class="activity-dot green"></div>
+              <div class="activity-content">
+                <div class="activity-text"><strong>TokoKilat ↔ Budi</strong> 3 new dark stores onboarded</div>
+                <div class="activity-time">1 week ago · Indonesia Cohort 2</div>
+              </div>
+            </div>
+            <div class="activity-item">
+              <div class="activity-dot purple"></div>
+              <div class="activity-content">
+                <div class="activity-text"><strong>KampungMart ↔ Sarah Tan</strong> seller onboarding +30%</div>
+                <div class="activity-time">1 week ago</div>
+              </div>
+            </div>
+            <div class="activity-item">
+              <div class="activity-dot green"></div>
+              <div class="activity-content">
+                <div class="activity-text"><strong>FlowPay</strong> introduced to 2 Series A investors by Dato' Rajan</div>
+                <div class="activity-time">2 weeks ago · 🚀 High impact</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Cohort Progress -->
+        <div class="card">
+          <div class="card-header">
+            <h2 class="card-title">Cohort Overview</h2>
+            <button class="btn-ghost" data-goto="cohorts">All cohorts →</button>
+          </div>
+          <div id="dashboard-cohort-list"></div>
+        </div>
+
+        <!-- Intelligence Card -->
+        <div class="card card-gradient">
+          <div class="card-header">
+            <h2 class="card-title" style="color:white">Platform Intelligence</h2>
+            <span class="badge badge-purple">AI Insights</span>
+          </div>
+          <div class="insight-list">
+            <div class="insight-item">
+              <div class="insight-icon">🚀</div>
+              <div>
+                <div class="insight-title">FlowPay on Series A Track</div>
+                <div class="insight-body">Revenue +40% since cohort start. Dato' Rajan's investor intros yielding term sheet discussions. Recommend Series A partner linkage.</div>
+              </div>
+            </div>
+            <div class="insight-item">
+              <div class="insight-icon">⚠️</div>
+              <div>
+                <div class="insight-title">GreenPack ↔ Ahmad — Frequency Drop</div>
+                <div class="insight-body">Meetings dropped to bi-monthly for 2 weeks. Automated nudge sent. Consider Amirah check-in call.</div>
+              </div>
+            </div>
+            <div class="insight-item">
+              <div class="insight-icon">🌏</div>
+              <div>
+                <div class="insight-title">Indonesia Cohort Inheriting KL Data</div>
+                <div class="insight-body">Budi's GAIN-ID-2 programme is leveraging 6 cohorts of Malaysian mentor track records. Match quality 23% higher than GAIN-ID-1.</div>
+              </div>
+            </div>
+            <div class="insight-item">
+              <div class="insight-icon">⭐</div>
+              <div>
+                <div class="insight-title">Dr. Priya is Top Mentor This Cohort</div>
+                <div class="insight-body">Average feedback 4.85/5. Available for 1 more pairing. Recommend prioritising for Cohort 8.</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Mentors Page -->
+    <div class="page" id="page-mentors">
+      <div class="page-header">
+        <div>
+          <h1 class="page-title">Mentor Pool</h1>
+          <p class="page-subtitle">6 mentors across Malaysia, Indonesia & Thailand</p>
+        </div>
+        <div class="header-actions">
+          <div class="search-box">
+            <svg viewBox="0 0 24 24" fill="none" width="16" height="16"><circle cx="11" cy="11" r="8" stroke="currentColor" stroke-width="2"/><path d="M21 21l-4.35-4.35" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+            <input type="text" placeholder="Search mentors..." id="mentor-search" />
+          </div>
+          <button class="btn btn-primary" data-permission="create_mentor">+ Add Mentor</button>
+        </div>
+      </div>
+      <div class="entity-grid" id="mentor-grid"></div>
+    </div>
+
+    <!-- Startups Page -->
+    <div class="page" id="page-startups">
+      <div class="page-header">
+        <div>
+          <h1 class="page-title">Startup Portfolio</h1>
+          <p class="page-subtitle">5 startups across 2 active cohorts</p>
+        </div>
+        <div class="header-actions">
+          <div class="search-box">
+            <svg viewBox="0 0 24 24" fill="none" width="16" height="16"><circle cx="11" cy="11" r="8" stroke="currentColor" stroke-width="2"/><path d="M21 21l-4.35-4.35" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+            <input type="text" placeholder="Search startups..." id="startup-search" />
+          </div>
+          <button class="btn btn-primary" data-permission="create_startup">+ Add Startup</button>
+        </div>
+      </div>
+      <div class="entity-grid" id="startup-grid"></div>
+    </div>
+
+    <!-- AI Matching Page -->
+    <div class="page" id="page-matching">
+      <div class="page-header">
+        <div>
+          <h1 class="page-title">AI Matching Engine</h1>
+          <p class="page-subtitle">Data-driven mentor-startup compatibility scoring</p>
+        </div>
+        <div class="header-actions">
+          <button class="btn btn-primary" id="run-match-page-btn" data-permission="run_matching">
+            <svg viewBox="0 0 24 24" fill="none" width="16" height="16"><polygon points="5 3 19 12 5 21 5 3" stroke="currentColor" stroke-width="2" fill="currentColor"/></svg>
+            Run Matching
+          </button>
+        </div>
+      </div>
+
+      <div class="matching-layout">
+        <!-- Selector -->
+        <div class="card matching-selector">
+          <div class="card-header">
+            <h2 class="card-title">Select Startup</h2>
+          </div>
+          <div class="startup-selector-list" id="startup-selector"></div>
+        </div>
+
+        <!-- Results -->
+        <div class="matching-results-panel">
+          <div id="matching-placeholder" class="matching-placeholder">
+            <div class="placeholder-icon">
+              <svg viewBox="0 0 24 24" fill="none" width="48" height="48"><circle cx="9" cy="12" r="6" stroke="currentColor" stroke-width="1.5"/><circle cx="15" cy="12" r="6" stroke="currentColor" stroke-width="1.5"/></svg>
+            </div>
+            <div class="placeholder-title">Select a startup to see mentor matches</div>
+            <div class="placeholder-sub">The AI engine will score all mentors against the startup's needs, expertise fit, geography, and track record.</div>
+          </div>
+          <div id="matching-results" class="hidden"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Relationships Page -->
+    <div class="page" id="page-relationships">
+      <div class="page-header">
+        <div>
+          <h1 class="page-title">Relationships</h1>
+          <p class="page-subtitle">5 live mentorship relationships across 2 programmes</p>
+        </div>
+        <div class="header-actions">
+          <select class="select-filter" id="rel-filter">
+            <option value="all">All Programmes</option>
+            <option value="GAIN-7">GAIN Cohort 7</option>
+            <option value="GAIN-ID-2">Indonesia Cohort 2</option>
+          </select>
+        </div>
+      </div>
+      <div id="relationships-list"></div>
+      <!-- Detail Modal -->
+      <div class="modal-overlay hidden" id="rel-modal-overlay">
+        <div class="modal" id="rel-modal">
+          <button class="modal-close" id="rel-modal-close">✕</button>
+          <div id="rel-modal-content"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Cohorts Page -->
+    <div class="page" id="page-cohorts">
+      <div class="page-header">
+        <div>
+          <h1 class="page-title">Cohort History</h1>
+          <p class="page-subtitle">Every cohort is archived — nothing is lost</p>
+        </div>
+        <div class="header-actions">
+          <button class="btn btn-primary" id="open-new-cohort-btn">+ New Programme</button>
+        </div>
+      </div>
+      <div id="cohorts-list"></div>
+    </div>
+  </main>
+
+  <!-- Registration Modal -->
+  <div class="modal-overlay hidden" id="register-modal-overlay">
+    <div class="modal" id="register-modal">
+      <button class="modal-close" id="register-modal-close">✕</button>
+      <h2 style="font-family:'Outfit',sans-serif;font-size:22px;font-weight:800;margin-bottom:8px">Join the GAIN Platform</h2>
+      <p style="font-size:13px;color:var(--text2);margin-bottom:20px;line-height:1.5">Please fill out your details below to register.</p>
+      
+      <div style="background:var(--surface2);border-radius:10px;padding:16px;margin-bottom:20px;display:flex;flex-direction:column;gap:12px">
+        <div>
+          <label style="display:block;font-size:12px;color:var(--text3);margin-bottom:4px">Full Name / Company Name</label>
+          <input type="text" id="register-name" placeholder="e.g. Aisha Rahman" style="width:100%;background:var(--surface);border:1px solid var(--border);color:var(--text);padding:8px 12px;border-radius:6px;font-family:'Inter',sans-serif;font-size:13px;outline:none">
+        </div>
+        
+        <div>
+          <label style="display:block;font-size:12px;color:var(--text3);margin-bottom:4px">I am registering as a...</label>
+          <select id="register-type" style="width:100%;background:var(--surface);border:1px solid var(--border);color:var(--text);padding:8px 12px;border-radius:6px;font-family:'Inter',sans-serif;font-size:13px;outline:none">
+            <option value="Mentor">Mentor (Giving advice)</option>
+            <option value="Startup">Startup (Seeking advice)</option>
+          </select>
+        </div>
+
+        <div>
+          <label style="display:block;font-size:12px;color:var(--text3);margin-bottom:4px">Brief Bio / Description</label>
+          <textarea id="register-bio" placeholder="Briefly describe your background or your startup..." style="width:100%;background:var(--surface);border:1px solid var(--border);color:var(--text);padding:8px 12px;border-radius:6px;font-family:'Inter',sans-serif;font-size:13px;resize:vertical;min-height:80px;outline:none"></textarea>
+        </div>
+
+        <div>
+          <label style="display:block;font-size:12px;color:var(--text3);margin-bottom:4px">Keywords / Tags (comma separated)</label>
+          <input type="text" id="register-tags" placeholder="e.g. Fintech, Series A, Marketing" style="width:100%;background:var(--surface);border:1px solid var(--border);color:var(--text);padding:8px 12px;border-radius:6px;font-family:'Inter',sans-serif;font-size:13px;outline:none">
+        </div>
+      </div>
+      
+      <div style="display:flex;justify-content:flex-end">
+        <button class="btn btn-primary" id="submit-register-btn">Submit Registration</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- New Cohort Modal -->
+  <div class="modal-overlay hidden" id="cohort-modal-overlay">
+    <div class="modal" id="cohort-modal">
+      <button class="modal-close" id="cohort-modal-close">✕</button>
+      <h2 style="font-family:'Outfit',sans-serif;font-size:22px;font-weight:800;margin-bottom:8px">Create New Programme</h2>
+      
+      <div style="background:var(--surface2);border-radius:10px;padding:16px;margin-bottom:20px;display:flex;flex-direction:column;gap:12px;margin-top:20px">
+        <div>
+          <label style="display:block;font-size:12px;color:var(--text3);margin-bottom:4px">Programme Name</label>
+          <input type="text" id="cohort-name" placeholder="e.g. GAIN Cohort 8" style="width:100%;background:var(--surface);border:1px solid var(--border);color:var(--text);padding:8px 12px;border-radius:6px;font-family:'Inter',sans-serif;font-size:13px;outline:none">
+        </div>
+        <div>
+          <label style="display:block;font-size:12px;color:var(--text3);margin-bottom:4px">Country / Region</label>
+          <input type="text" id="cohort-country" placeholder="e.g. Malaysia" style="width:100%;background:var(--surface);border:1px solid var(--border);color:var(--text);padding:8px 12px;border-radius:6px;font-family:'Inter',sans-serif;font-size:13px;outline:none">
+        </div>
+        <div style="display:flex;gap:12px">
+            <div style="flex:1">
+              <label style="display:block;font-size:12px;color:var(--text3);margin-bottom:4px">Start Date</label>
+              <input type="date" id="cohort-start" style="width:100%;background:var(--surface);border:1px solid var(--border);color:var(--text);padding:8px 12px;border-radius:6px;font-family:'Inter',sans-serif;font-size:13px;outline:none">
+            </div>
+            <div style="flex:1">
+              <label style="display:block;font-size:12px;color:var(--text3);margin-bottom:4px">End Date</label>
+              <input type="date" id="cohort-end" style="width:100%;background:var(--surface);border:1px solid var(--border);color:var(--text);padding:8px 12px;border-radius:6px;font-family:'Inter',sans-serif;font-size:13px;outline:none">
+            </div>
+        </div>
+      </div>
+      
+      <div style="display:flex;justify-content:flex-end">
+        <button class="btn btn-primary" id="submit-cohort-btn">Create Programme</button>
+      </div>
+    </div>
+  </div>
+
+  <script src="data.js"></script>
+  <script src="rbac.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>
